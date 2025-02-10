@@ -67,6 +67,7 @@ note:
 ## Voorbeeld impliciete invloeden
 
 <div class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true }}}%%
 architecture-beta
     group monolith(server)[Monolith]
 
@@ -100,6 +101,7 @@ note:
 ---
 
 <div class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true }}}%%
 architecture-beta
     service promote(server)[Promote event]
     service promote_db(database)[Promote event database]
@@ -222,6 +224,7 @@ note:
 <div style="display:flex; justify-content: space-between">
 van
 <div class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true }}}%%
 architecture-beta
 
     service trading(server)[trading]
@@ -230,6 +233,7 @@ architecture-beta
 </div>
 naar
 <div class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true }}}%%
 architecture-beta
 
     service trading(server)[trading]
@@ -267,6 +271,7 @@ note:
 
 <div style="display:flex; flex-direction: column">
 <div class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true }}}%%
 architecture-beta
 
     service trading(server)[trading]
@@ -286,6 +291,7 @@ architecture-beta
 
 </div>
 <div class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true }}}%%
 architecture-beta
 
     service trading(server)[trading]
@@ -392,6 +398,7 @@ note:
 ## Toestandsdiagram
 
 <div class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true }}}%%
 stateDiagram-v2
     state if_state_1 &lt;&lt;choice&gt;&gt;
     state if_state_2 &lt;&lt;choice&gt;&gt;
