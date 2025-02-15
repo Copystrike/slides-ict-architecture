@@ -64,7 +64,7 @@ note:
   - welke zijn het belangrijkst voor onze applicatie?
 
 ---
-## Voorbeeld impliciete invloeden
+## Impliciete invloed op structuur
 
 <div class="mermaid">
 %%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true }}}%%
