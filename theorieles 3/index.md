@@ -447,6 +447,7 @@ note:
 ![afferente koppeling](./afbeeldingen/afferent-coupling.png)
 note:
 - we zeggen hier dat de CA van Bidder Profile 2 bedraagt
+- kunnen pijlen van actions mee beschouwen (gebeurt ook in boek)
 
 ---
 
