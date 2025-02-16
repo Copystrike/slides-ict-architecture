@@ -260,6 +260,7 @@ note:
 - conceptuele stappen van één "user journey"
 - verschillende stappen ⇒ verschillende componenten
   - niet nodig voor sterk verwante stappen
+  - omgekeerd: één stap kan meerdere aspecten bevatten en dus beter over meerdere componenten verdeeld worden
 
 note:
 - user journey: één "typisch gebruik" van het systeem
