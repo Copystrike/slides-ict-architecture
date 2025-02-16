@@ -14,25 +14,51 @@ note:
 
 ## Diagramvoorstelling
 
-<div class="mermaid">
+<div class="mermaid" data-text-scaling="3">
 %%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true }}}%%
 block-beta
-  columns 5
-  space:4 ordertracking
-  space:5
-  orderplacement space paymentprocessing space ordershipping
-  space:5
-  inventorymanagement space:4
+  %% 14 omdat er rij is met drie blokken met spaties tussen
+  %% dus veelvoud van 3, plus 2
+  %% zodat blokken aanzienlijk meer plaats innemen dan spaties
+  columns 14
+  space:10 ordertracking:4
+  space:14
+  orderplacement:4 space:1 paymentprocessing:4 space:1 ordershipping:4
+  space:14
+  inventorymanagement:4 space:10
+
+  %% ronde haakjes voor afgerond blok
+  ordertracking("Order Tracking")
+  ordershipping("Order Shipping")
+  orderplacement("Order Placement")
+  inventorymanagement("Inventory Management")
+  paymentprocessing("Payment Processing")
+
+  orderplacement-->inventorymanagement
   orderplacement-->paymentprocessing
   paymentprocessing-->ordershipping
-  orderplacement-->inventorymanagement
   ordershipping-->ordertracking
 
-  orderplacement(["Order Placement"])
-  paymentprocessing(["Payment Processing"])
-  ordershipping(["Order Shipping"])
-  ordertracking(["Order Tracking"])
-  inventorymanagement(["Inventory Management"])
+  %% rx en ry zorgen voor mate afronding
+  classDef component rx:50px,ry:50px,height:8em
+  class ordertracking component
+  class ordershipping component
+  class paymentprocessing component
+  class orderplacement component
+  class inventorymanagement component
+
+  %% kan op span met text een display:inline-block en transform:scale(...) zetten
+  %% maar wordt afgesneden
+  %% kan het ook op de g met klasse label zetten, dan wordt het niet afgesneden
+  %% maar moet dan wel translatie corrigeren
+  %% oké, kan dit?
+  %% voor elk Mermaid diagram
+  %%   eerst de data-text-scaling achterhalen
+  %%   als die er is
+  %%     voor elke vervatte instantie van de klasse "component"
+  %%     alle kind-g's met klasse label zoeken
+  %%     hun transform uitbreiden met de overeenkomstige schaalfactor
+  %%     en hun translatie aanpassen (evenredig lijkt goed)
 
 </div>
 
@@ -73,13 +99,15 @@ note:
 block-beta
 columns 3
   block:service1
-    A(["component A"])
-    B(["component B"])
+    columns 1
+    A("component A")
+    B("component B")
   end
   space
   block:service2
-    C(["component C"])
-    D(["component D"])
+    columns 1
+    C("component C")
+    D("component D")
   end
   space Database[("DB")] space
   service1-->Database
@@ -117,23 +145,31 @@ note:
 
 ## Voorbeeldcomponenten
 
-<div class="mermaid">
+<div class="mermaid" data-text-scaling="10">
 %%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true }}}%%
 block-beta
-columns 9
-  auctionmaintenance space auctionscheduler space:6
-  space:9
-  space:2 auctionsearch space auctionviewer space bidderregistration space biddersignon
+columns 63
+  auctionmaintenance:11 space:2 auctionscheduler:11 space:39
+  space:63
+  space:13 auctionsearch:11 space:2 auctionviewer:11 space:2 bidderregistration:11 space:2 biddersignon:11
   auctionmaintenance-->auctionscheduler
   auctionsearch-->auctionscheduler
   auctionviewer-->auctionsearch
   biddersignon-->bidderregistration
-  auctionmaintenance(["Auction Maintenance"])
-  auctionscheduler(["Auction Scheduler"])
-  auctionsearch(["Auction Search"])
-  auctionviewer(["Auction Viewer"])
-  bidderregistration(["Bidder Registration"])
-  biddersignon(["Bidder Sign-on"])
+  auctionmaintenance("Auction Maintenance")
+  auctionscheduler("Auction Scheduler")
+  auctionsearch("Auction Search")
+  auctionviewer("Auction Viewer")
+  bidderregistration("Bidder Registration")
+  biddersignon("Bidder Sign-on")
+
+  classDef component rx:200px,ry:200px,height:30em
+  class auctionmaintenance component
+  class auctionscheduler component
+  class auctionsearch component
+  class auctionviewer component
+  class bidderregistration component
+  class biddersignon component
 </div>
 
 note:
@@ -148,26 +184,30 @@ note:
 <div class="mermaid">
 %%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true }}}%%
 block-beta
-columns 7
-  block:service1
-    auctionsearch(["Auction Search"])
-    auctionviewer(["Auction Viewer"])
+%% 7 kolommen, waarvan 4 voor services, 2 echt leeg en 1 met DB in
+%% neem 4 per service, 3 voor de DB en 2 per spatie?
+columns 21
+  block:service1:4
+    columns 1
+    auctionsearch("Auction Search")
+    auctionviewer("Auction Viewer")
   end
-  space
-  block:service2
-    auctionmaintenance(["Auction Maintenance"])
-    auctionscheduler(["Auction Scheduler"])
+  space:3
+  block:service2:4
+  columns 1
+    auctionmaintenance("Auction Maintenance")
+    auctionscheduler("Auction Scheduler")
   end
-  space
-  block:service3
-    bidderregistration(["Bidder Registration"])
+  space:1
+  block:service3:4
+    bidderregistration("Bidder Registration")
   end
-  space
-  block:service4
-    biddersignon(["Bidder Sign-on"])
+  space:1
+  block:service4:4
+    biddersignon("Bidder Sign-on")
   end
-  space:7
-  space Database1[("DB")] space:2 Database2[("DB")] space:2
+  space:21
+  space:4 Database1[("DB")]:3 space:5 Database2[("DB")]:4 space:5
   service1-->Database1
   service2-->Database1
   service3-->Database2
@@ -436,9 +476,10 @@ note:
 ![Demeter](./afbeeldingen/Demeter.png)
 
 note:
-- zorgde dat het graan groeide, maar trok zich niets aan van wat er verder mee gedaan werd
 - ook "principle of least knowledge"
 - staat symbool voor "losse koppeling"
+- [uitleg](https://en.wikipedia.org/wiki/Law_of_Demeter)
+  - moeilijk exacte details te vinden, maar losse koppeling is de kern!
 
 ---
 
@@ -464,7 +505,7 @@ note:
 ---
 
 ### Toegepast (3)
-<div style="display: flex; flex-direction: row">
+<div style="display: flex; flex-direction: column">
 <img src="./afbeeldingen/high-coupling.png"></img>
 <img src="./afbeeldingen/low-coupling.png"></img>
 </div>
