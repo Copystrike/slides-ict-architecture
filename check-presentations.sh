@@ -29,4 +29,8 @@ done
 
 echo -e "\n=== Presentation Check Complete ==="
 echo "Final directory contents:"
-ls -la presentaties/
+ls -la presentaties
+# echo pwd
+echo "pwd is: $(pwd)"
+ls -la /app
+echo "=== End of Presentation Check ==="
