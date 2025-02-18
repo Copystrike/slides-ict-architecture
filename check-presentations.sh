@@ -4,6 +4,16 @@ echo "Current directory: $(pwd)"
 echo "Directory contents:"
 ls -la
 
+# wait for the server to be ready
+echo "Waiting for server to start..."
+while ! nc -z localhost 8000; do
+    sleep 1
+done
+echo "Server is ready!"
+
+echo "Waiting 5 seconds for server to fully start..."
+sleep 5
+
 echo -e "\nScanning for theory lessons..."
 for dir in "theorieles"*; do
     echo "Checking directory: ${dir}"
