@@ -12,15 +12,8 @@ async function exportSlides() {
 
   const browser = await puppeteer.launch({
     headless: "new",
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium-browser',
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--disable-accelerated-2d-canvas',
-      '--disable-gpu',
-      '--window-size=1920x1080'
-    ]
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || "/usr/bin/chromium-browser",
+    args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage", "--disable-accelerated-2d-canvas", "--disable-gpu", "--window-size=1920x1080"],
   });
   console.log("Browser launched");
 
@@ -47,8 +40,19 @@ async function exportSlides() {
         return typeof Reveal !== "undefined" && Reveal.isReady();
       },
       { timeout: 10000 }
-    ); // Add timeout of 10 seconds
+    );
     console.log("Reveal.js loaded");
+
+    // Fix selector name and add error handling
+    console.log("Waiting for #logische-componenten element...");
+    await page.waitForSelector("#logische-componenten", { timeout: 30000 }).catch((err) => {
+      console.error("Element not found:", err);
+
+      // close application if element is not found
+
+      return browser.close().then(() => process.exit(1));
+    });
+    console.log("Element check complete");
 
     const dir = "presentaties";
 
@@ -60,13 +64,13 @@ async function exportSlides() {
       console.error("Error creating directory:", err);
       throw err;
     }
-    
+
     console.log("Pressing 'e' key...");
     await page.keyboard.press("e");
-    
+
     // wait 5 seconds for the page to render
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+
     await page.evaluate(() => {
       const downloadsSection = document.querySelector(".downloads-section");
       downloadsSection.style.display = "none";
