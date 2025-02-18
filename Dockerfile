@@ -15,7 +15,8 @@ RUN apk add --no-cache \
     yarn \
     dbus \
     udev \
-    netcat-openbsd
+    netcat-openbsd \
+    net-tools
 
 # Add Chrome user
 RUN addgroup -S pptruser && adduser -S -G pptruser pptruser \

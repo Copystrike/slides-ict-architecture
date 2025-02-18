@@ -2,15 +2,30 @@
 
 # Function to stop the server
 stop_server() {
-    # First try graceful shutdown of our known server
+    # Try to get PID from PID file first
+    if [ -f "/tmp/presentation-server.pid" ]; then
+        local SAVED_PID=$(cat /tmp/presentation-server.pid)
+        if [ ! -z "$SAVED_PID" ]; then
+            echo "Stopping server from PID file (PID: $SAVED_PID)..."
+            kill -TERM $SAVED_PID 2>/dev/null || true
+            rm -f "/tmp/presentation-server.pid"
+        fi
+    fi
+
+    # Also try to stop our known server PID
     if [ ! -z "$SERVER_PID" ]; then
-        echo "Stopping server (PID: $SERVER_PID)..."
+        echo "Stopping known server process (PID: $SERVER_PID)..."
         kill -TERM $SERVER_PID 2>/dev/null || true
     fi
 
-    # Force kill any process using port 8000
-    echo "Ensuring port 8000 is free..."
-    lsof -ti:8000 | xargs -r kill -9
+    # More thorough port check using netstat instead of lsof
+    local PORT_PID=$(netstat -tlnp 2>/dev/null | grep ":8000" | awk '{print $7}' | cut -d'/' -f1)
+    if [ ! -z "$PORT_PID" ]; then
+        echo "Cleaning up process on port 8000 (PID: $PORT_PID)..."
+        kill -TERM $PORT_PID 2>/dev/null || true
+        sleep 1
+        kill -9 $PORT_PID 2>/dev/null || true
+    fi
     
     # Reset PID variable
     SERVER_PID=""
@@ -45,6 +60,7 @@ for dir in "theorieles"*; do
             echo "Starting server for ${dir}..."
             npm start "${dir}" &
             SERVER_PID=$!
+            echo $SERVER_PID > /tmp/presentation-server.pid
 
             # wait for the server to be ready AND stable
             echo "Waiting for server to start..."
