@@ -6,6 +6,7 @@ const express = require('express');
 const ejs = require('ejs');
 const fs = require('fs');
 const path = require('path');
+const { getPresentationList } = require('./fileList');
 const app = express();
 const port = 8000;
 
@@ -19,7 +20,11 @@ app.get('/', (req, res, next) => {
     const folderName = rawFolderName.endsWith("/") || rawFolderName.endsWith("\\") ? rawFolderName.slice(0, -1) : rawFolderName;
     ejs.renderFile(
         templateFilePath,
-        { markdownContent, folderName: folderName },
+        { 
+            markdownContent, 
+            folderName, 
+            presentations: getPresentationList() 
+        },
         (err, str) => {
             if (err) return next(err);
             res.send(str);

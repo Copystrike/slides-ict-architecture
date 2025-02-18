@@ -11,8 +11,11 @@ RUN npm install
 # Copy application files
 COPY . .
 
+# Create presentations directory and make check script executable
+RUN mkdir -p presentaties && chmod +x check-presentations.sh
+
 # Expose port
 EXPOSE 8000
 
-# Start the application with the latest theory lesson
-CMD sh -c 'npm start "$(ls -d theorieles* | sort -V | tail -n 1)"'
+# Start the application and run the check script
+CMD sh -c './check-presentations.sh && npm start "$(ls -d theorieles* | sort -V | tail -n 1)"'
