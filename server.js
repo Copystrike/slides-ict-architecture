@@ -37,5 +37,13 @@ app.use(express.static("."));
 app.use("/reveal.js", express.static(__dirname + "/node_modules/reveal.js"))
 
 app.listen(port, () => {
-    console.log(`Listening on http://localhost:${port} with static dir ${path.join(__dirname, process.argv[2])}`);
+    console.log(`Listening on http://localhost:${port} with static dir ${staticDir}`);
+}).on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`Port ${port} is already in use. Exiting...`);
+    process.exit(1);
+  } else {
+    console.error('Server error:', err);
+    process.exit(1);
+  }
 });

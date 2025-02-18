@@ -43,15 +43,23 @@ async function exportSlides() {
     );
     console.log("Reveal.js loaded");
 
-    // Fix selector name and add error handling
-    console.log("Waiting for #logische-componenten element...");
-    await page.waitForSelector("#logische-componenten", { timeout: 30000 }).catch((err) => {
-      console.error("Element not found:", err);
+    // Wait for slides content to be loaded
+    console.log("Waiting for slides content...");
+    await page
+      .waitForFunction(
+        () => {
+          const slides = document.querySelector(".slides section");
+          return slides && slides.children.length > 0;
+        },
+        { timeout: 30000 }
+      )
+      .catch((err) => {
+        console.error("Element not found:", err);
 
-      // close application if element is not found
+        // close application if element is not found
 
-      return browser.close().then(() => process.exit(1));
-    });
+        return browser.close().then(() => process.exit(1));
+      });
     console.log("Element check complete");
 
     const dir = "presentaties";
