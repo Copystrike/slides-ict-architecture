@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 8000
 
 # Start the application with the latest theory lesson
-CMD npm start $(ls -d theorieles* | sort -V | tail -n 1)
+CMD sh -c 'npm start "$(ls -d theorieles* | sort -V | tail -n 1)"'
