@@ -12,6 +12,15 @@ async function exportSlides() {
 
   const browser = await puppeteer.launch({
     headless: "new",
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium-browser',
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-accelerated-2d-canvas',
+      '--disable-gpu',
+      '--window-size=1920x1080'
+    ]
   });
   console.log("Browser launched");
 
