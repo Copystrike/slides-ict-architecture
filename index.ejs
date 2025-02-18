@@ -15,12 +15,22 @@
 </head>
 
 <body>
+    <section class="downloads-section">
+        <h2>Downloads</h2>
+        <ul>
+            <% presentations.forEach(function(presentation) { %>
+                <li><a href="/presentaties/<%= presentation %>.pdf" download>
+                        <%= presentation %>
+                    </a></li>
+                <% }); %>
+        </ul>
+    </section>
     <div class="reveal">
         <div class="slides">
             <section data-markdown>
                 <!-- browser rendert templates niet, maar ze blijven wel beschikbaar -->
                 <script type="text/template">
-<%- markdownContent %>
+                    <%- markdownContent %>
                 </script>
             </section>
         </div>
@@ -30,10 +40,13 @@
     <script src="./node_modules/reveal.js/plugin/markdown/markdown.js"></script>
     <script src="./node_modules/reveal.js/plugin/highlight/highlight.js"></script>
     <script src="./node_modules/reveal.js-mermaid-plugin/plugin/mermaid/mermaid.js"></script>
+    <script src="./pdf.js"></script>
     <script>
         Reveal.initialize({
             hash: true,
-            plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMermaid],
+            disableLayout: true,
+            plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMermaid, PdfExport],
+            pdfExportShortcut: 'E',
         });
     </script>
     <script src="./mermaid-component-text-scaling.js"></script>
