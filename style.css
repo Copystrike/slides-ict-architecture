@@ -1,4 +1,35 @@
 section.no-screens-slide::after {
-    content: "Laptops dicht" "\A" "GSM's weg";
-    white-space: preserve-breaks;
+  content: "Laptops dicht" "\A""GSM's weg";
+  white-space: preserve-breaks;
+}
+
+.downloads-section {
+  border-radius: 8px;
+  width: 10%;
+}
+
+.downloads-section h2 {
+  margin-bottom: 1em;
+  color: #fff;
+  font-size: 2em;
+}
+
+.downloads-section ul {
+  list-style-type: none;
+}
+
+.downloads-section li {
+  margin-bottom: 1em;
+}
+
+.downloads-section a {
+  text-decoration: none;
+  color: #1e90ff;
+  font-size: 1.2em;
+  transition: color 0.3s ease;
+}
+
+.downloads-section a:hover {
+  text-decoration: underline;
+  color: #ff6347;
 }

@@ -6,6 +6,7 @@ const express = require('express');
 const ejs = require('ejs');
 const fs = require('fs');
 const path = require('path');
+const { getPresentationList } = require('./fileList');
 const app = express();
 const port = 8000;
 
@@ -19,7 +20,11 @@ app.get('/', (req, res, next) => {
     const folderName = rawFolderName.endsWith("/") || rawFolderName.endsWith("\\") ? rawFolderName.slice(0, -1) : rawFolderName;
     ejs.renderFile(
         templateFilePath,
-        { markdownContent, folderName: folderName },
+        { 
+            markdownContent, 
+            folderName, 
+            presentations: getPresentationList() 
+        },
         (err, str) => {
             if (err) return next(err);
             res.send(str);
@@ -32,5 +37,13 @@ app.use(express.static("."));
 app.use("/reveal.js", express.static(__dirname + "/node_modules/reveal.js"))
 
 app.listen(port, () => {
-    console.log(`Listening on http://localhost:${port} with static dir ${path.join(__dirname, process.argv[2])}`);
+    console.log(`Listening on http://localhost:${port} with static dir ${staticDir}`);
+}).on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`Port ${port} is already in use. Exiting...`);
+    process.exit(1);
+  } else {
+    console.error('Server error:', err);
+    process.exit(1);
+  }
 });
