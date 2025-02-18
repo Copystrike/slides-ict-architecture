@@ -14,5 +14,5 @@ COPY . .
 # Expose port
 EXPOSE 8000
 
-# Start the application
-CMD ["npm", "start"]
+# Start the application with the latest theory lesson
+CMD npm start $(ls -d theorieles* | sort -V | tail -n 1)
