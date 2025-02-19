@@ -245,7 +245,7 @@ note:
 
 - 2 technieken
   - workflow
-  - actor/agent
+  - actor/action
 - mogen beide toepassen
 
 note:
