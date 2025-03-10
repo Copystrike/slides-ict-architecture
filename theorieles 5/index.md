@@ -22,6 +22,7 @@ note:
 ![interactie systemen](./afbeeldingen/going-green-electronics-interactie-systemen.png)
 
 note:
+- geen formeel diagram, manier om een paar user journeys te bundelen
 - focussen hier op Device Assessment, dus beoordeling van de waarde van toestellen
   - "quote" is ook wel beoordeling maar is veel ruwer
 - veel soorten toestellen
@@ -51,24 +52,31 @@ note:
 
 ![structuur microkernel](./afbeeldingen/structuur-microkernel.png)
 note:
-exacte uitwerking kan op verschillende manieren
+- exacte uitwerking kan op verschillende manieren
+- let op de formulering: "the components can reside..." ⇒ plugins zijn niet a priori vastgelegde componenten
 
 ---
 
 ## De "core"
 
 - bewust beperkt
-  - als iets als plugin *kan*, *implementeer het dan zo*
 - stabiel
+
+note:
+- als iets als plugin *kan*, *implementeer het dan zo*
+- je kan plugins toevoegen aan een grote, op zich staande applicatie, maar dan spreken we niet echt over microkernel
 
 ---
 
 ## De plugins
 
-- leveren custom gedrag
+- custom gedrag
 - mogelijk door externen geschreven
   - soms zijn er wel "officiële" plugins
-- plugins zijn alleen afhankelijk van de core, niet onderling
+- alleen afhankelijk van de core
+
+note:
+- opnieuw: technisch kan het anders, maar niet aan te raden
 
 ---
 
@@ -105,14 +113,20 @@ class iPhone15 implements DeviceInterface {
 
 note:
 - **typische** aanpak: plugins implementeren vaste interface
+  - deze interface kan bepalen wanneer een plugin runt (bijvoorbeeld methode `RunOnRender` of iets in die aard)
+  - bepaalt vaak ook waar een plugin toegang toe heeft (bijvoorbeeld `RunOnRender(applicationConfig: Dictionary<String,String>)`)
 - code laadt objecten dynamisch in, bv. omdat ze in een bepaalde source folder staan
 - lijkt vrij sterk op werken met zelf geschreven code
+  - soms is er *sandboxing* (plugin mag enkel aan afgebakende data) voorzien, soms niet (plugin kan hetzelfde als het ouderproces, bv. filesysteem lezen)
 
 ---
 
 ## Gedistribueerde implementatie (1)
 ![gedistribueerde implementatie](./afbeeldingen/microkernel-gedistribueerd.png)
 
+note:
+- network calls, technologisch dus niets nieuws
+  - kan over HTTP, via message queue,...
 ---
 
 ## Gedistribueerde implementatie (2)
@@ -140,8 +154,8 @@ note:
 - tool waarmee cursus Python Advanced is klaargezet
 - vergelijk met "infrastructure as code", maar het is "leerpaden as code"
 - begonnen als script, uitgegroeid tot microkernel applicatie
-  - DigitAP klaarzetten is veel werk!
-  - leerpaden maken is veel werk!
+  - DigitAP klaarzetten is veel werk
+  - leerpaden maken is veel werk
 - sommige lectoren maken graag quizzen, sommige indienopdrachten, sommige gebruiken Github Classroom,...
 - sommige lectoren schrijven liever Markdown, sommige AsciiDoc, sommige Word
 - sommige liever tekst in DigitAP zelf, sommige in Gitbook
@@ -163,15 +177,15 @@ note:
 
 note:
 - sommige vakken lenen zich beter tot projecten dan andere
-- het systeem en dit vak zijn nog vrij nieuw
+- het systeem en dit vak zijn nog vrij nieuw, dus (nog) niet gebruikt voor ICT Architecture
 ---
 ## Voorbeeld technische cluster
 
-![technische cluster](./afbeeldingen/technische-cluster.png)
+![technische cluster](./afbeeldingen/concepten.svg)
 
 ---
 ## Voorbeeld projectcluster
-![projectcluster](./afbeeldingen/projectcluster.png)
+![projectcluster](./afbeeldingen/shortener.svg)
 
 ---
 ## Inhoudstafel (nodes)
@@ -196,23 +210,19 @@ nodes:
 ```
 
 note:
-opdrachten ("assignments") zijn niet ingebouwd in de kernlogica, maar we kunnen dat veld gebruiken omwille van een plugin
+- zie paar slides eerder: node is een stukje leerstof
+- opdrachten ("assignments") zijn niet ingebouwd in de kernlogica, maar we kunnen dat veld gebruiken omwille van een plugin
 
 ---
 ## Inhoudstafel (de rest)
 
 ```yaml
-all_type_edges:
+all_type_edges: # normaal meerdere
   - start_id: intro
     end_id: stap-1-mapping-tonen-motivatie
-  - start_id: cluster-python-concepten__flask-basis
-    end_id: stap-1-mapping-tonen-implementatie
-  # etc.
-any_type_edges:
+any_type_edges: # normaal meerdere
   - start_id: stap-1-mapping-tonen-motivatie
     end_id: stap-1-mapping-tonen-implementatie
-  - start_id: stap-1-mapping-tonen-implementatie
-    end_id: stap-2-mapping-uitbreiden-motivatie
 roots:
   - intro
 node_plugins:
@@ -226,9 +236,9 @@ pre_zip_plugins:
 note:
 plugintypes verschillen van elkaar in verschillende opzichten:
 
-- tijdstip waarop ze lopen (bij elke wijziging / enkel voor export)
+- tijdstip waarop ze lopen (bij elke wijziging / enkel voor export) ⇒ wat eerder in de notes stond over interface voor plugins, hier ook weerspiegeld
 - toegang tot het systeem (node plugins kunnen enkel aan het lesmateriaal van een specifiek stukje leerstof; cluster plugins aan een volledige cluster; pre-zip aan alle gecombineerde clusters)
-- aangeboden functionaliteit uit de core (meer gespecialiseerde, makkelijkere functies naarmate de scope preciezer wordt)
+- aangeboden functionaliteit uit de core (meer gespecialiseerde, makkelijkere functies naarmate de scope preciezer wordt) ⇒ kan ook een factor zijn
 
 ---
 
@@ -258,9 +268,33 @@ note:
 
 ---
 
-## Vergelijking
-TODO
-- oude aanpak: dynamisch inladen was hier soms nadeel, kon bij klein foutje app doen crashen
-- nieuwe aanpak: sandboxing kan beperkend werken, heb één stukje functionaliteit in de core moeten zetten (genereren syntaxhulp)
-- monolitische aanpak zoals in boek
-- gedistribueerde aanpak zoals in boek
+## Vergelijking (in LBLP)
+
+---
+### Oude aanpak
+
+note:
+- ✅ heel flexibel: kon syntaxhulp genereren via plugin, nu moeten verplaatsen naar core
+- ✅ code schrijven was bijna zelfde als code schrijven voor core
+- ❌ héél sterke koppeling: plugins moesten exact zelfde opties voor compilatie gebruiken, exact zelfde versie,...
+- ❌ stabiliteit
+- ❌ veiligheidsrisico
+
+---
+### Nieuwe aanpak
+
+note:
+- ✅ veilig: pluginauteurs kunnen enkel gebruik maken van aangeboden functionaliteit, kunnen niet aan filesysteem in het algemeen,...
+- ✅ stabiel: als plugin fout bevat, crasht het systeem niet
+- ✅ ondersteunt meerdere implementatietalen
+- ❌ code schrijven is wat moeilijker want moet compatibel zijn met compilatietarget (WebAssembly)
+- ❌ sandboxing kan beperkend zijn (syntaxhulp)
+
+---
+
+![eindevaluatie](./afbeeldingen/eindevaluatie.png)
+
+note:
+- maintainability lijkt me wat in het midden omwille van eenvoud enerzijds (goed!) maar hoge kost van aanpassingen aan de kernel
+- testability vind ik persoonlijk nog wat beter dan drie sterren...
+- merk op dat er een paar criteria zijn die sterk afhangen van de precieze vorm van deze stijl
