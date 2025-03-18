@@ -234,3 +234,4 @@ note:
 - Kubernetes speelt hier grote rol
   - grote verschil met Docker Compose: multi-machine (of zelfs multi-cloud), ingebouwde scaling en state management
   - niet elke microservice heeft een dedicated machine of VM nodig, we maken (typisch) gewoon containers, zetten die op in deployments en Kubernetes zal ze over verschillende machines verdelen
+- "orchestrator" ≠ voor workflow orchestration, het gaat om verschillende niveaus van "dirigeren"
