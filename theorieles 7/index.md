@@ -24,8 +24,6 @@ note:
 
 ---
 
----
-
 ```mermaid
 graph TD
   subgraph Cluster
