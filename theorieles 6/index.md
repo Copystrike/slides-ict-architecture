@@ -159,6 +159,7 @@ note:
 note:
 - de gecentraliseerde oplossing
 - in essentie: een extra service weet hoe hij al individuele services moet coördineren
+- bestaan gespecialiseerde tools voor (Airflow,...) of "roll your own"
 
 ---
 
