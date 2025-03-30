@@ -125,59 +125,10 @@ note:
 
 ---
 
-```yaml
-# expliciete SC om een locatie op de host te gebruiken voor storage
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: docker-hostpath-sc
-provisioner: docker.io/hostpath
----
-apiVersion: v1
-kind: PersistentVolume # dit zegt: "er bestaat een volume met deze eigenschappen"
-metadata:
-  # we gaan eerst demonstreren met Apache web server
-  # maar aangezien die files zelf niet meer aanpast is ConfigMap eigenlijk logischer
-  name: httpd-pv
-spec:
-  storageClassName: docker-hostpath-sc
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: /home/vincentn/testdir # TODO: aanpassen naar gelang machine waarop we runnen voor demo
----
-apiVersion: v1
-kind: PersistentVolumeClaim # dit vraagt om een volume met bepaalde eigenschappen
-metadata:
-  name: httpd-pvc
-spec:
-  storageClassName: docker-hostpath-sc
-  accessModes:
-    - ReadWriteOnce # er kan maar één claim op het volume zijn
-  resources:
-    requests:
-      storage: 1Gi
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: httpd
-spec:
-  containers:
-    - name: httpd
-      image: httpd:2.4
-      volumeMounts:
-        - name: public-html-dir
-          mountPath: /usr/local/apache2/htdocs
-  volumes:
-    - name: public-html-dir
-      persistentVolumeClaim:
-        claimName: httpd-pvc
-```
+## Voorbeeld: web server files via PV
 
 note:
+- zie httpd-with-pv.yaml
 - data blijft bewaard bij gebruik identieke pod op zelfde node
 - test uit door een pod op basis van `curlimages/curl` te runnen voor het gemak
 
