@@ -1,4 +1,7 @@
-# Ingress en StatefulSets
+# Ingress en StatefulSet
+
+note:
+- uitbreidingen op Service en Deployment, respectievelijk
 
 ---
 
@@ -155,7 +158,7 @@ note:
 ![associatie volumes](./afbeeldingen/associatie-volumes.png)
 
 note:
-- volumes bestaan *los* van Pods, dus het is belangrijk dat ze toegekend worden aan "dezelfde" pods
+- persistente volumes bestaan *los* van Pods, dus het is belangrijk dat ze toegekend worden aan "dezelfde" pods
 - merk op hoe de namen van de Pods binnen dezelfde StatefulSet systematisch toegekend zijn en makkelijk te matchen zijn aan de volumes
 - **implicatie**: `StatefulSet` kan ook zinvol zijn als er maar één replica is, want met sommige clusterconfiguraties en storagetypes is niet gegarandeerd dat vervanger steeds zelfde storage krijgt
 - we gebruiken `volumeClaimTemplates` (in plaats van `PersistentVolumeClaim`), het gaat technisch om een nieuwe claim wanneer we een pod vervangen
@@ -185,4 +188,8 @@ note:
   - behoren tot zelfde `StatefulSet` maar hebben ander configuratiebestand
     - we gebruiken init containers die de podnamen bekijken om de juiste pod het juiste configuratiebestand te geven
   - oké zolang clients van de secondary iets oudere data te zien mogen krijgen
-- uittesten: makkelijkste is om dat van binnen de cluster te doen met `mysql -h mysql-0.mysql ...`
+- **dit kost tijd en moeite, ook zonder Kubernetes of Docker**: stappen [hier](https://dev.mysql.com/doc/refman/8.4/en/replication-howto.html) en info [hier](https://hub.docker.com/_/mysql) nodig gehad en moeten lezen, dus onthoud vooral:
+  - er zijn twee replica's
+  - beide replica's hebben eigen files nodig (configuratie en opstartscripts)
+  - we moeten kunnen garanderen dat `mysql-0` de primary is
+- uittesten: makkelijkste is op de replica in te loggen en te merken dat we aanpassingen van de primary zien
