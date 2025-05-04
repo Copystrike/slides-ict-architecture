@@ -75,7 +75,6 @@ Hier is geen "perfecte" oplossing. Wel goed en slecht onderbouwde.
   - microkernel
   - microservices
     - Kubernetes en specifieke diensten
-  - event-driven
 ---
 
 # ICT-architectuur

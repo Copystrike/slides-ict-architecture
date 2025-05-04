@@ -10,7 +10,7 @@
 </table>
 
 note:
-- overzicht van de stijlen die we verder gaan bekijken
+- overzicht van de stijlen (event-driven gaan we uiteindelijk niet behandelen)
 - stijl zal bepalen hoe we componenten van eerder concreet gaan realiseren
 - er bestaan er nog (bv. voor realtime systemen), maar deze zijn algemeen bruikbaar
 - monolitisch in logische zin kan nog steeds fysiek verdeeld zijn, maar dat is wel minder vanzelfsprekend
